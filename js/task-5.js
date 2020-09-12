@@ -1,49 +1,69 @@
-// Оформи вызов метода invokeInventoryAction таким образом,
-//   чтобы в качестве this для методов
+/*
+ * Добавь `статический` метод
+ * `getSpecs(car)`, который принимает
+ * объект-машину как параметр
+ * и возвращает шаблонную строку
+ * со свойствами и значениями объекта.
+ * Свойства:
+ *   maxSpeed,
+ *   speed,
+ *   isOn,
+ *   distance,
+ *   price
+ * Пример строки, полученной этим методом:
+ * 'maxSpeed: 200, speed: 50, isOn: true, distance: 100, price: 2000'
+ */
+class Car {
+  static getSpecs(car) {
+    return `maxSpeed: ${car.maxSpeed},
+     speed: ${car.speed},
+      isOn: ${car.isOn},
+       distance: ${car.distance},
+        price: ${car.price}`;
+  }
+  /*
+   * Конструктор получает объект настроек.
+   *
+   * Добавь свойства будущеего экземпляра класса:
+   *  speed - текущая скорость,
+   *          начальное значение `0`
+   *  price - цена автомобиля
+   *  maxSpeed - максимальная скорость
+   *  isOn - заведен ли автомобиль.
+   *         Значения `true` или `false`,
+   *         начальное значение false
+   *  distance - пробег в километрах,
+   *             начальное значение `0`
+   */
+  constructor({ speed = 0, price, maxSpeed, isOn = false, distance = 0 }) {
+    this.speed = speed;
+    this._price = price;
+    this.maxSpeed = maxSpeed;
+    this.isOn = isOn;
+    this.distance = distance;
+  }
 
-// inventory.add
-// inventory.remove выступал объект inventory
+  /*
+   * Добавь геттер и сеттер
+   * для свойства `price`, который будет
+   * работать с свойством цены автомобиля.
+   *
+   * ВАЖНО: для записи методов get и set
+   * значение параметра записывают с
+   * подчеркиванием. См. ниже пример 1.
+   */
 
-const inventory = {
-  items: ['Knife', 'Gas mask'],
-  add(itemName) {
-    this.items.push(itemName);
-    return `Adding ${itemName} to inventory`;
-  },
-  remove(itemName) {
-    this.items = this.items.filter(item => item !== itemName);
-    return `Removing ${itemName} from inventory`;
-  },
-};
+  get price() {
+    return this._price;
+  }
+  set price(value) {
+    this._price = value;
+  }
+  turnOn() {
+    this.isOn = false;
+    this.speed = 0;
+  }
+}
 
-const invokeInventoryAction = function (itemName, action) {
-  const act = action(itemName);
-  const msg = `Invoking action on ${itemName}`;
-  return { act, msg };
-};
-
-const invokeAdd = invokeInventoryAction(
-  'Medkit',
-  inventory.add.bind(inventory), // Write code in this line
-);
-const arrayAdd = [...inventory.items];
-
-console.log(invokeAdd);
-//{ act: 'Adding Medkit to inventory', msg: 'Invoking action on Medkit' }
-
-//console.log(arrayAdd);
-// ['Knife', 'Gas mask', 'Medkit']
-
-const invokeRemove = invokeInventoryAction(
-  'Gas mask',
-  inventory.remove.bind(inventory), // Write code in this line
-);
-
-const arrayRemove = [...inventory.items];
-
-console.log(invokeRemove);
-//{ act: 'Removing Gas mask from inventory', msg: 'Invoking action on Gas mask' }
-
-console.log(arrayRemove);
-// ['Knife', 'Medkit']
-console.log(inventory);
+const mustang = new Car({ maxSpeed: 200, price: 2000 });
+console.log(Car.getSpecs(mustang));
